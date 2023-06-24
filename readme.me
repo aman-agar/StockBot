@@ -1,3 +1,11 @@
-invokeClient -> Get the tiingo client object used to access the data
-vizMSData -> Get the plot of multiple stocks data
-MultiStockData class takes start_dt and end_dt in form of dates object
+# Encoder Decoder Model
+
+# Multi Stock Model
+1. invokeClient -> Get the tiingo client object used to access the data
+2. msdata -> Get dataframe for the tickers. Takes Tickers and return dataframe
+3. vizMSData -> Get the plot of multiple stocks data
+4. normalize -> Normalize the dataframe and create a time series seq for LSTM. It has two classes for normalizing and sequentializing
+5. trainMS -> Call relevant methods from all the above files and start the training process
+6. models/multistock -> The architecture for the Multistock model
+
+# StockBot

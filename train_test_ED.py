@@ -1,4 +1,4 @@
-from project.models.encoder_decoder import EncoderDecoder
+from models.encoder_decoder import EncoderDecoder
 import tensorflow as tf
 import numpy as np
 import pandas as pd

@@ -1,6 +1,5 @@
-import numpy as np
 import pandas as pd
-from datetime import timedelta, date
+from datetime import timedelta
 from utils.invokeClient import getClient
 
 def daterange(date1, date2):
@@ -14,24 +13,27 @@ def getDateRange(start_dt, end_dt) -> list:
   return dates
 
 # Extracting close price from the Dataframe
-def getClosePrice(df) -> list:
-  closeprice = []
-  for i in range(df.shape[0]):
-    closeprice.append(df['close'][i])
-  return closeprice
+def getClosePrice(df):
+    dates = []
+    closeprice = []
+    for index, row in df['close'].items():
+        closeprice.append(row)
+        dates.append(index.to_pydatetime().strftime('%Y-%m-%d'))
+    return dates, closeprice
 
-# Get dates and close price into a dataframe
+# Insert dates and close price into a dataframe
 def getDataframe(dates, closeprice, ticker) -> pd.DataFrame:
   new_df=pd.DataFrame()
   new_df['Date'] = dates
-  print(new_df.shape)
-  print(len(closeprice))
+#   print(new_df.shape)
+#   print(len(closeprice))
 
   new_df[ticker] = closeprice
 
   return new_df
 
-def getfinalDF(Tickers, client, dates):
+
+def getfinalDF(Tickers, client):
     i = 0
     finalDF = pd.DataFrame()
     
@@ -41,32 +43,33 @@ def getfinalDF(Tickers, client, dates):
                             endDate='2023-06-18'
                             )
         closeprice = []
-        print(i)
-        closeprice = getClosePrice(tempDF)
+        # print(i)
+        
         if i == 0:
+            # dates = getDates(tempDF)
+            dates, closeprice = getClosePrice(tempDF)
             finalDF = getDataframe(dates, closeprice, ticker)
-            print(len(dates))
-            print(finalDF.head())
+            
         else: 
+            _, closeprice = getClosePrice(tempDF)
             finalDF[ticker] = closeprice
         i+=1
     return finalDF
     
 
-class MultiStockData():
+class MultiStockData:
     '''
     Create an object of the class passing start date, end date and Tickers as parameters
     and call the object to get the dataframe with closing prices of all the stocks in tickers
     '''
-    def __init__(self, start_dt, end_dt, Tickers):
+    def __init__(self, Tickers):
         super(MultiStockData, self).__init__()
         self.client = getClient()
-        self.dates = getDateRange(start_dt, end_dt)
-        self.finalDF = getfinalDF(Tickers, self.client, self.dates)
+        self.finalDF = getfinalDF(Tickers, self.client)
         self.Tickers = Tickers
 
     def __call__(self) -> pd.DataFrame:
-        finalDF = getfinalDF(self.Tickers, self.client, self.dates)
+        finalDF = self.finalDF
         return finalDF
   
 
