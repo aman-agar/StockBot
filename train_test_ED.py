@@ -8,7 +8,9 @@ from matplotlib import rc
 from sklearn.preprocessing import MinMaxScaler
 from tiingo import TiingoClient
 from datetime import timedelta, date
-from tensorflow.keras.layers import Input
+from keras.layers import Input
+from keras.models import Model
+from keras.optimizers import Adam
 
 
 plt.style.use('fivethirtyeight')
@@ -93,13 +95,13 @@ X_train, y_train, X_test, y_test = preprocess(scaled_close, SEQ_LEN, train_split
 # Creating object of ED model and compiling
 def train():
     ED = EncoderDecoder()
-    encoder_inputs = tf.keras.layers.Input(shape = X_train)
+    encoder_inputs = Input(shape = X_train)
 
 #--------------------------------------Decoder-Inuput-Setup---------------------------------------------------------------------------------------
-    decoder_inputs = tf.keras.layers.Input(shape = )
+    decoder_inputs = Input(shape = )
     outputs = ED(encoder_inputs, decoder_inputs)
-    model = tf.keras.Model(inputs=[encoder_inputs, decoder_inputs], outputs=outputs)
-    opt=tf.keras.optimizers.Adam(learning_rate=1e-3)
+    model = Model(inputs=[encoder_inputs, decoder_inputs], outputs=outputs)
+    opt = Adam(learning_rate=1e-3)
     model.compile(loss='mean_squared_error', optimizer=opt)
     print(model.summary())
 

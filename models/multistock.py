@@ -1,14 +1,14 @@
-from tensorflow.keras.layers import LSTM, Input, Dense, Flatten, Dropout
-from tensorflow.keras.models import Model
+from keras.layers import LSTM, Input, Dense, Flatten, Dropout
+from keras.models import Model
 
 class MultiStockModel(Model):
   def __init__(self, X_train):
     super(MultiStockModel, self).__init__()
 
     self.DROPOUT_RATE = 0.2
-    self.lstm1 = LSTM(22, return_sequence = True, name = 'Encoder', input_size = (X_train.shape[1], X_train.shape[2]))
-    self.lstm2 = LSTM(22, return_sequence = True, name = 'Encoder')
-    self.lstm3 = LSTM(22, return_sequence = True, name = 'Encoder')
+    self.lstm1 = LSTM(22, return_sequences = True, name = 'LSTM-Layer-1', input_shape = (X_train.shape[1], X_train.shape[2]))
+    self.lstm2 = LSTM(22, return_sequences = True, name = 'LSTM-Layer-2')
+    self.lstm3 = LSTM(22, return_sequences = True, name = 'LSTM-Layer-3')
     self.dense = Dense(1, activation = 'linear', name = 'Dense')
     self.dropout = Dropout(self.DROPOUT_RATE)
     self.flatten = Flatten()

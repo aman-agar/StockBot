@@ -5,6 +5,9 @@ from datetime import date
 from models.multistock import MultiStockModel
 import tensorflow as tf
 import matplotlib.pyplot as plt
+from keras.layers import Input
+from keras.models import Model
+from keras.optimizers import Adam
 
 # Define Tickers
 Tickers = ['AAPL', 'MSFT', 'GOOGL', 'META', 'INTU']
@@ -29,10 +32,10 @@ print(y_test.shape)
 
 # Create Model object
 MS = MultiStockModel(X_train)
-inputs = tf.keras.layers.Input(shape = (X_train.shape[1],X_train.shape[2]))
+inputs = Input(shape = (X_train.shape[1],X_train.shape[2]))
 outputs = MS(inputs)
-model = tf.keras.Model(inputs=inputs, outputs=outputs)
-opt=tf.keras.optimizers.Adam(learning_rate=1e-3)
+model = Model(inputs=inputs, outputs=outputs)
+opt = Adam(learning_rate=1e-3)
 model.compile(loss='mean_squared_error', optimizer=opt)
 print(model.summary())
 
@@ -57,4 +60,4 @@ plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 
-model.save("MultiStockModel.h5")
+model.save("models/MultiStockModel.h5")
