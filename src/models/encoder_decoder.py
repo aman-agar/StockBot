@@ -1,12 +1,13 @@
-from tensorflow.keras.layers import LSTM, Input, Dense, Flatten, Dropout
-from tensorflow.keras.models import Model
+from keras.layers import LSTM, Dense, Dropout, Flatten, Input
+from keras.models import Model
+
 
 class EncoderDecoder(Model):
-  def __init__(self):
+  def __init__(self, X_train):
     super(EncoderDecoder, self).__init__()
 
-    self.encoder = LSTM(20, return_sequence = True, name = 'Encoder')
-    self.decoder = LSTM(20, return_sequence = True, return_state = True, name = 'Decoder')
+    self.encoder = LSTM(22, return_sequences = True, return_state = True, name = 'Encoder', input_shape = (X_train.shape[1], X_train.shape[2]))
+    self.decoder = LSTM(22, return_sequences = True, return_state = True, name = 'Decoder')
     self.dense = Dense(1, activation = 'linear', name = 'Dense')
     self.dropout = Dropout(0.2)
     self.flatten = Flatten()
@@ -20,6 +21,8 @@ class EncoderDecoder(Model):
     denseOutput = self.dense(x)
 
     return denseOutput
+
+
 
 
 

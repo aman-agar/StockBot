@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
-from utils.MSdata import MultiStockData
+from src.fetch.MSdata import MultiStockData
 from datetime import date
 
 plt.style.use('seaborn')
-start_dt = date(2017, 1, 1)
-end_dt = date(2023, 6, 18)
+# start_dt = date(2017, 1, 1)
+# end_dt = date(2023, 6, 18)
 
 # Define the Tickers 
 Tickers = ['AAPL', 'MSFT', 'GOOGL', 'META', 'INTU']

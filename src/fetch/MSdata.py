@@ -1,6 +1,9 @@
+import sys
+sys.path.insert(0,'src/')
 import pandas as pd
 from datetime import timedelta
 from utils.invokeClient import getClient
+from datetime import date
 
 def daterange(date1, date2):
     for n in range(int ((date2 - date1).days)+1):
@@ -40,7 +43,7 @@ def getfinalDF(Tickers, client):
     for ticker in Tickers:
         tempDF = client.get_dataframe(ticker,
                             startDate='2017-01-01',
-                            endDate='2023-06-18'
+                            endDate=str(date.today())
                             )
         closeprice = []
         # print(i)
@@ -59,7 +62,7 @@ def getfinalDF(Tickers, client):
 
 class MultiStockData:
     '''
-    Create an object of the class passing start date, end date and Tickers as parameters
+    Create an object of the class passing Tickers as parameters
     and call the object to get the dataframe with closing prices of all the stocks in tickers
     '''
     def __init__(self, Tickers):

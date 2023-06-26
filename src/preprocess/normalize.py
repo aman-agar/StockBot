@@ -20,6 +20,25 @@ class Normalize:
         df = pd.DataFrame(x_scaled)
         return self.scaler, x_scaled
     
+    @staticmethod
+    def EDdecoder(x_scaled): 
+        '''
+        Decoder Inputs for Encoder-Decoder Model'''
+        decoderInputs = x_scaled[::-1]
+        print(decoderInputs.shape)
+        decoderInputs = decoderInputs[:-1]
+        decoderInputs = decoderInputs[::-1]
+        x_scaled = x_scaled[:-1]
+        print(decoderInputs.shape)
+        return decoderInputs, x_scaled
+    
+    @staticmethod
+    def inverseMinMax(min_, scale_, X):
+        X -= min_
+        X /= scale_
+        return X
+
+    
 class Sequentialize():
     '''
     Create a sequence for time series data'''
@@ -35,13 +54,37 @@ class Sequentialize():
         # print(np.array(d).shape)
         return np.array(d)
     
-    def preprocess(self, data_raw, seq_len, train_split):
+    def preprocess(self, data_raw, seq_len, train_split, ms=False):
+        '''
+        Preprocess the data from training
+        '''
         data = self.to_sequences(data_raw, seq_len)
+        y_train = []
+        y_test = []
         num_train = int(self.train_split * data.shape[0])
         X_train = data[:num_train, :-1, :]
-        y_train = data[:num_train, -1, :1]
-
         X_test = data[num_train:, :-1, :]
-        y_test = data[num_train:, -1, :1]
+        if ms == True:
+            y_train = data[:num_train, -1, :1]
+            y_test = data[num_train:, -1, :1]
+        else:
+            y_train = data[:num_train, -1, :]
+            y_test = data[num_train:, -1, :]
+        
         return X_train, y_train, X_test, y_test
+    
+    def preprocessEval(self, data_raw, seq_len, ms=False):
+        '''
+        PreProcess the data for evaluation
+        '''
+        data = self.to_sequences(data_raw, seq_len)
+        print(data.shape)
+        X = data[:, :-1, :]
+        if ms == True:
+            Y = data[:, -1, :1]
+        else:
+            Y = data[:, -1, :]
+        
+        return X, Y
+
 

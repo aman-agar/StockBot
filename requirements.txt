@@ -6,3 +6,4 @@ tiingo[pandas]
 datetime
 matplotlib
 sklearn
+fastparquet
