@@ -4,7 +4,7 @@ def getClient():
     config = {}
     config['session'] = True
     try:
-        config['api_key'] = "44c3cbbc4115125fe0f7012c67b29d10f0be5a00" 
+        config['api_key'] = "TIINGO_API_KEY" 
     except: 
         print("Exception caught while accessing data from API")
     client = TiingoClient(config)
